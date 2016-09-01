@@ -1,5 +1,3 @@
-# openAFMCircuits
+# Input Board
 
-This is the repo for the circuit schematics and layouts for the openAFM board.
-
-Each board has its own branch!!
+This folder contains the diptrace schematic and pcb layout for the input board.
