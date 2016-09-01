@@ -17,8 +17,12 @@ This board takes in 12V DC from the power supply.  It is responsible for regulat
 
 # Input Board
 
-This board deals 
+This board deals with the inputs from the 4 photodiode quadrants on the DVD head (labelled as A, B, C and D).  It routes these directly to an ADC, calculates differences and summs in hardware and routes these to another ADC.
 
 # Piezo Board
 
+This board has a 4 channel DAC which is used to control the signals to move each of the 4 piezo quadrants that control the stage movement.  It takes the 4 voltages from the DAC and amplifies them to give a larger range.
+
 # Voice Coil Board
+
+Has a DAC that, along with a pair of push-pull amplifiers, generates the required current to drive the voice coils in the DVD head (focus and tracking).
