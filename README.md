@@ -1,6 +1,6 @@
 # openAFMCircuits
 
-This is the repo for the circuit schematics and layouts for the openAFM board.
+This is the repo for the circuit schematics and layouts for the openAFM board.  Each board is in a separate subfolder.  Some folders contain text files with "simulation" or "falstadsimulation" or something similar in the name.  These are schematics for a simulation (typically of some part of the circuit).  They can be viewed by going to http://www.falstad.com/circuit/circuitjs.html and importing the text via `File -> Import From Text`.
 
 There are 4 boards that control the openAFM hardware.  These are
 
