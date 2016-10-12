@@ -1,0 +1,425 @@
+*** Component Net List Start ***
+
+R_J3 Net_1 Net_9 0
+X_AD623-2 Net_16 Net_12 Net_6 Net_9 Net_2 0 Net_26 0 AD623/AD
+X_AD623-1 Net_15 Net_11 Net_10 Net_7 Net_2 0 Net_25 0 AD623/AD
+R_J4 Net_8 Net_7 0
+C_ADCap1 Net_2 0 3.2uF IC=0
+C_ADCap2 Net_2 0 3.2uF IC=0
+C_C1 0 Net_2 0.1uF IC=0
+C_C2 Net_2 0 3.2uF IC=0
+X_AD623-3 Net_17 Net_13 Net_19 Net_22 Net_2 0 Net_27 0 AD623/AD
+C_ADCap3 Net_2 0 3.2uF IC=0
+X_AD623-4 Net_18 Net_14 Net_20 Net_24 Net_2 0 Net_28 0 AD623/AD
+C_ADCap4 Net_2 0 3.2uF IC=0
+R_J8 Net_21 Net_22 0
+R_J10 Net_24 Net_23 0
+C_C3 0 Net_2 3.2uF IC=0
+C_C4 0 Net_2 3.2uF IC=0
+
+*** Component Net List End ***
+
+*** Spice Libary Statements Start ***
+
+*** Spice Libary Statements End ***
+
+*** Spice Include Statements Start ***
+
+*** Spice Include Statements End ***
+
+* Distributed as-is, unmodified, and at no charge by
+* www.spicemodel.com 
+* accuracy should be verified by user
+* 
+* AD623 SPICE Macromodel          Rev. B 9/2000
+*					JCH / ADI
+*                                       TRW / ADI
+* Copyright 1999 by Analog Devices
+*
+* Refer to "README.DOC" file for License Statement.  Use of
+* this model indicates your acceptance of the terms and pro-
+* visions in the License Statement.
+* 
+*                   non-inverting input
+*                   |   inverting input
+*                   |   |  +Rg
+*                   |   |   |  -Rg
+*                   |   |   |   |   positive supply
+*                   |   |   |   |   |  negative supply
+*                   |   |   |   |   |  |  output
+*                   |   |   |   |   |  |  |   reference
+*                   |   |   |   |   |  |  |   |
+.SUBCKT AD623/AD    IN+ IN- Rg+ Rg- 99 50 OUT REF
+QIN1    50 IN+ A3 QPI1
+QIN2    50 IN- A4 QPI2
+IBIAS1  99   A3  2u
+IBIAS2  99   A4  2u
+R1     Rg+ 103 50k
+R2     Rg- 104 50k
+CMR    Rg+  99 0.5p
+R3     104 202 50k
+R4     103 201 50k
+*Output stage common-mode error
+R5     201 REF 50.004k
+R6     202 OUT 49.996k
+*X1     201 202 99 50 OUT Inamp_output
+*X2       A3 Rg+ 99 50 103 Inamp_input
+*X3       A4 Rg- 99 50 104 Inamp_input
+*Quiescent current correction
+Icor 99 50 1.25e-4
+* INPUT STAGE
+*
+Q1B   B4  B3  B5  QPI
+Q2B   B6  202  b7  QPI
+RC1B    50  B4  8.5k
+RC2B    50  B6  8.5k
+RE1B     B5  B8  3.3k
+RE2B     B7  B8  3.3k 
+ENOISB   201  B3  B53 98 1 
+D1B      B3 99  DX
+D2B     50  B3  DX
+IBIASB  99  B8  10u
+*
+* INTERNAL VOLTAGE REFERENCE
+*
+EREF1 98 97  99 0 0.5
+EREF2 97  0  50 0 0.5
+*
+* VOLTAGE NOISE STAGE
+*
+DN1B   B51 B52 DNOI1
+VN1B   B51 98 0.64
+VMEASB B52 98 0
+RNOI1B B52 98 1
+F1B    B53 98 VMEASB 1
+RNOI2B B53 98 1
+*
+* INTERMEDIATE GAIN STAGE WITH POLE = 578kHz
+*
+G1B   98 B20 B4 B6 1E-3 
+RP1B  98 B20 550
+CP1B  98 B20 500p
+*
+* INTERMEDIATE GAIN STAGE WITH POLE = 900kHz
+*
+G2B   98 B21 B4 B6 1E-3 
+RP2B  98 B21 500
+CP2B  98 B21 354p
+*
+* GAIN STAGE WITH DOMINANT POLE
+*
+G4B    98 B30 B21 98 3.65E-3
+RG1B   B30 98 25k
+CF1B   B30 OUT 0.275n
+D5B B31 99 DX
+D6B 50 B32 DX
+V1B B31 B30 0.6
+V2B B30 B32 0.6
+*
+* OUTPUT STAGE
+*
+Q3B     OUT B42 B43 QPOX
+Q4B     OUT B44 B46 QNOX
+RO3B    99 B43 30
+RO4B    B46 50 30
+VBI01B  99 B41 0.5965
+VBIO2B  B47 50 0.5965
+EO3B    B41 B42 98 B30 10
+EO4B    B44 B47 B30 98 10
+*
+* INPUT STAGE
+*
+Q1C   C4  C5  C8 QPI
+Q2C   C6  RG+  C8 QPI
+RC1C    50  C4 8.5k
+RC2C    50  C6 8.5k
+ENOIC    A3  C5 C53 98 1 
+D1C      C3 99 DX
+D2C     50  C3 DX
+IBIASC  99  C8 10u
+*
+*
+* VOLTAGE NOISE STAGE
+*
+DN1C    C51 C52 DNOI1
+VN1C    C51 98 0.64
+VMEASC  C52 98 0
+RNOI1C  C52 98 1e-4
+F1C     C53 98 VMEASC 1
+RNOI2C  C53 98 1
+*
+* INTERMEDIATE GAIN STAGE 
+*
+G1C   98 C20 C4 C6 1E-3 
+RP1C  98 C20 4.67k
+*
+* GAIN STAGE WITH DOMINANT POLE
+*
+G4C   98 C30 C20 98 2E-3
+RG1C  C30 98 125k
+CF1C  C30 103 2.5n
+D5C   C31 99 DX
+D6C   50 C32 DX
+V1C   C31 C30 0.6
+V2C   C30 C32 0.6
+*
+* OUTPUT STAGE
+*
+Q3C     103 C42 C43 QPOX
+Q4C     103 C44 C46 QNOX
+RO3C    99 C43 30
+RO4C    C46 50 30
+VBI01C  99 C41 0.5965
+VBIO2C  C47 50 0.5965
+EO3C    C41 C42 98 C30 5
+EO4C    C44 C47 C30 98 5
+*
+* INPUT STAGE
+*
+Q1D   D4  D5  D8 QPI
+Q2D   D6  RG-  D8 QPI
+RC1D    50  D4 8.5k
+RC2D    50  D6 8.5k
+ENOID    A4  D5 D53 98 1 
+D1D      D3 99 DX
+D2D     50  D3 DX
+IBIASD  99  D8 10u
+*
+*
+* VOLTAGE NOISE STAGE
+*
+DN1D    D51 D52 DNOI1
+VN1D    D51 98 0.64
+VMEASD  D52 98 0
+RNOI1D  D52 98 1e-4
+F1D     D53 98 VMEASD 1
+RNOI2D  D53 98 1
+*
+* INTERMEDIATE GAIN STAGE 
+*
+G1D   98 D20 D4 D6 1E-3 
+RP1D  98 D20 4.67k
+*
+* GAIN STAGE WITH DOMINANT POLE
+*
+G4D   98 D30 D20 98 2E-3
+RG1D  D30 98 125k
+CF1D  D30 104 2.5n
+D5D   D31 99 DX
+D6D   50 D32 DX
+V1D   D31 D30 0.6
+V2D   D30 D32 0.6
+*
+* OUTPUT STAGE
+*
+Q3D     104 D42 D43 QPOX
+Q4D     104 D44 D46 QNOX
+RO3D    99 D43 30
+RO4D    D46 50 30
+VBI01D  99 D41 0.5965
+VBIO2D  D47 50 0.5965
+EO3D    D41 D42 98 D30 5
+EO4D    D44 D47 D30 98 5
+*
+.MODEL QPI PNP(VAF=100)
+.MODEL QNOX NPN(IS=6E-15,VAF=120,RC=50)
+.MODEL QPOX PNP(IS=6E-15,BF=112,VAF=120,RC=50)
+.MODEL DX D(IS=1E-16)
+.MODEL DNOI1 D(AF=1.5, KF=6E-10)
+.MODEL DNOI2 D(KF=1E-8)
+.MODEL QPI1 PNP(VAF=100)
+.MODEL QPI2 PNP(VAF=99.3)
+.ENDS 
+*
+*---------------------------------------------------------------------------
+*
+*  Analog Devices SPICE Macro-model Library    
+*  
+*  Copyright 2001 by Analog Devices, Inc.
+*  
+*  LICENSE STATEMENT
+*  
+*  The information on this diskette is protected under the
+*  United States copyright laws.  Analog Devices, Inc. ("ADI")
+*  hereby grants users of these macro-models hereto referred
+*  to as licensee, a nonexclusive, nontransferable license to
+*  use these macro-models as long as the licensee abides by
+*  the terms of this agreement.  Before using the macro-
+*  models, the licensee should read this license.  If the
+*  licensee does not accept these terms, this diskette should
+*  be returned to ADI within 30 days.
+*  
+*  The licensee may not sell, loan, rent, lease, or license
+*  the macro-models, in whole, in part, or in modified form,
+*  to anyone outside the licensee's company.  The licensee
+*  may modify these macro-models to suit his specific
+*  applications, and the licensee may make copies of this 
+*  diskette or macromodels for use within his company only.
+*  
+*  These macro-models are provided "AS IS, WHERE IS, AND WITH
+*  NO WARRANTY OF ANY KIND EITHER EXPRESSED OR IMPLIED, 
+*  INCLUDING BUT NOT LIMITED TO ANY IMPLIED WARRANTIES OF
+*  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE."
+*  
+*  In no event will ADI be liable for special, collateral,
+*  incidental, or consequential damages in connection with or
+*  arising out of the use of these macro-models.  ADI
+*  reserves the right to make changes to the products and the
+*  macro-models without prior notice.
+*  
+*  
+* APPLICATIONS INFORMATION
+*  
+* The SPICE macro-models on this diskette, as of the above
+* release date, are the most current for Analog Devices
+* products.  As more models are completed, new
+* releases of this diskette will be issued.  With Release
+* K, the ADSpice library now has 446 macromodels, which is
+* an increase of 18 models over Release J.
+* 
+* The model library contains many types of models in addition
+* to op amps.  The types of models are:  op amps, instrumentation
+* amplifiers, references, switches, variable gain amplifiers, 
+* multipliers, matched transistors, buffers, and a balanced line
+* receiver.
+* 
+* All the models have an advanced architecture that allows
+* for multiple poles and zeros to model accurately the AC
+* and transient response of the device.  Unique to ADI, the
+* following models contain noise sources, allowing SPICE 
+* analysis of the total noise of a circuit:
+* 
+*        AD581                    AD584
+*        AD587                    AD588
+*        AD645                    AD680
+*        AD712                    AD743
+*        AD745                    AD780
+*        AD797                    OP113
+*        OP176                    OP177
+*        OP213                    OP27
+*        OP275                    OP285
+*        OP37                      OP413
+*        OP77                      REF01
+*        REF02                    REF05
+*        REF10                    SSM2017
+*        AD795                    OP284
+*        AD603                    SSM2135
+*        
+* 
+* For more information on the ADSpice models, please contact
+* the ADI literature department and request the following
+* application notes:
+* 
+* AN110, AN117, AN120, AN126, AN132, and AN138
+* 
+* Contact:   Analog Devices, Inc.
+*                  Literature Dept.
+* 	      One Technology Way
+* 	      PO Box   9106
+* 	      Norwood, MA 02062      USA
+* 
+* Phone:   (800) ANALOGD  (262-5643)
+* 
+* MODEL REVISIONS
+* 
+* Some of the models have been revised since the last release
+* the diskette.  If a model was revised, the release letter
+* on the first line of the file was changed, and the
+* revisions are documented in the comments at the beginning
+* of the net-list file.
+* 
+* In addition, the hyphen from the names of the models 
+* has been removed to avoid confusion between the file name
+* and the model name.  This was done for almost all of the
+* models.
+* 			
+* OPEN-LOOP GAIN AND PHASE
+* 
+* A common mistake in simulating an amplifier's open-loop
+* gain and phase performance is to run the model open-loop. 
+* Like the actual device, without feedback, even a small
+* amount of offset can cause the circuit to saturate to
+* either supply rail.  Because of the saturation, the model
+* gives a much lower open-loop gain.  Thus, the model needs
+* to be run closed-loop.  Typically, the easiest way to do
+* this is to run the model in an inverting op amp
+* configuration and have SPICE plot the log of the output
+* minus the log of the inverting input.
+* 
+* TRANSIENT ANALYSIS
+* 
+* One of the most difficult problems in using SPICE is
+* convergence.  As the number of nodes increases, so do the
+* calculations needed for convergence.  If the analysis
+* quits due to non-convergence, then adding the following
+* line to the circuit net-list will help in most cases:
+* 
+*         .OPTIONS  ITL4=40
+* 
+* This increases the number of iterations from the default
+* of 10 to 40.  The SPICE simulator will then make 40
+* iterations to try to find the next point of the transient
+* solution before going to a smaller time step.
+* 
+* NEGATIVE CAPACITANCE
+* 
+* Some SPICE simulators do not allow the use of a negative
+* capacitor, which is used in some macro-models to properly
+* shape the frequency response.  Those simulators will
+* issue an error message stating that the negative
+* capacitor is not permissible.  When this problem is
+* encountered, change the sign of the negative capacitor to
+* positive.  Then, change the signs of the two resistors in
+* the same stage to negative.   
+* 
+* POWER DISSIPATION
+* 
+* All models accurately model the supply current of the
+* part including the output current.  To calculate the
+* power dissipation of the circuit, the supply current
+* should be multiplied by the supply voltage.  This may
+* give a different number compared to the total power
+* dissipation printed at the end of all SPICE ".OUT" files. 
+* The discrepancy is due to higher than normal internal 
+* currents, which are not added to the supply current.  
+* The noise models are especially affected by this because 
+* of the large currents in the internal stages needed to 
+* keep the noise low.  Thus, always use the actual supply 
+* currents to calculate the total power dissipation and do 
+* not use SPICE's printed power dissipation in the ".OUT"
+* file.
+* 
+*
+*  -------------------------------------------------------------------------
+*
+* * OP AMP MODEL TEST CIRCUIT
+* *
+* *  This net-list will test the OP-42 model in a simple
+* *  inverting gain of -1 circuit.  Three different types
+* *  of waveforms will be simulated:  DC, AC and transient.
+* *  This file can be used as direct input to your SPICE
+* *  simulator software.
+* *  To look at the output, enter "TYPE EXAMPLE.OUT"
+* *  An output file generated using PSpice 6.0 is saved
+* *  in the file "COMPARE.OUT" to check your output.
+* *
+* X1   0   2   4   5   3   OP42
+* RIN  1   2   2K
+* RF   3   2   2K
+* VP   4   0   DC 15
+* VN   5   0   DC -15
+* VIN  1   0   DC 0 AC 1 PULSE(-100M 100M 0 5N 5N 1U 2U)
+* .DC VIN -10 10 1
+* .PRINT DC V(3)
+* .AC DEC 10 10K 100MEG
+* .PLOT AC VM(3) VP(3)
+* .TRAN 20N 2U
+* .PLOT TRAN V(3)
+* .INC OP42.CIR
+* .END
+*
+* ----------------------------------------------------------------------------
+*
+
+.TRAN 0s 0s 0s
+
