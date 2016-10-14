@@ -1,11 +1,11 @@
 G04 DipTrace 3.0.0.2*
 G04 BottomDimension.gbr*
-%MOIN*%
+%MOMM*%
 G04 #@! TF.FileFunction,Drawing,Bot*
 G04 #@! TF.Part,Single*
-%FSLAX26Y26*%
+%FSLAX35Y35*%
 G04*
-G70*
+G71*
 G90*
 G75*
 G01*
