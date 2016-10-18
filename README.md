@@ -32,12 +32,14 @@ Has a DAC that, along with a pair of push-pull amplifiers, generates the require
 
 # I2C Addresses
 
-Here are 
+Here are the I2C addresses of all ICs connected to the I2C bus.
 
-**Part**  | MCP4651 | AD5593RBRUZ | AD5696RARUZ | AD5696RARUZ
-----------|---------|-------------|-------------|------------
-**Address (bin)** | 0101000 | 0010001 | 0001100 | 0001111
-**Address (hex)** | 14 | 9 | C | F
-**Board** | Input | Input | Piezo | Voice Coil
-**How?** | A0 grounded | A0 grounded | A0 & A1 grounded | A0 & A1 to 5V
-**Description** | Gain Dual digital pot | Signal ADC | Piezo DAC | Voice Coil DAC
+**Part**  | AD5252BRUZ100 | AD5252BRUZ100 | AD5593RBRUZ | AD5696RARUZ | AD5696RARUZ
+----------|---------------|---------------|-------------|-------------|------------
+**Address (bin)** | 0101111 | 0101100 | 0010001 | 0001100 | 0001111
+**Address (hex)** | 2F | 2C | 11 | C | F
+**Address (dec)** | 47 | 44 | 17 | 12 | 15
+**How?** | AD0 & AD1 to 5V | AD0 & AD1 grounded | A0 to 5V | A0 & A1 grounded | A0 & A1 to 5V
+**Description** | Gain Dual digital pot | Gain Dual digital pot | Input ADC | Piezo DAC | Voice Coil DAC
+**Board** | Input | Input | Input | Piezo | Voice Coil
+**Board Label** | U2 | U6 | U3 | ? | ?
