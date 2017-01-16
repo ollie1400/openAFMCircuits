@@ -14,3 +14,10 @@ Here are the I2C addresses of the ICs on this board
 **How?** | AD0 & AD1 to 5V | AD0 & AD1 grounded | A0 to 5V
 **Description** | Gain Dual digital pot | Gain Dual digital pot | ADC
 **Board Label** | U2 | U6 | U3
+
+
+# Layout Image
+
+For ease of access here is the layout of the board (from the top)
+
+![Layout of front side of input board](frontside.PNG)
